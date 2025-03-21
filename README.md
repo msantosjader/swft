@@ -39,7 +39,7 @@ To install SWFT using Docker, follow these steps:
    Clone the SWFT repository from GitHub to your local machine:
 
    ```bash
-   git clone https://github.com/nnisarggada/swft.git
+   git clone https://github.com/hect1k/swft.git
    cd swft
    ```
 

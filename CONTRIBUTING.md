@@ -27,7 +27,7 @@ Before contributing, please review our [Code of Conduct](CODE_OF_CONDUCT.md). We
 
 ### Reporting Bugs
 
-If you encounter a bug while using SWFT or have identified a potential issue, please [open a new issue](https://github.com/nnisarggada/swft/issues/new) on our GitHub repository. Ensure that your report includes:
+If you encounter a bug while using SWFT or have identified a potential issue, please [open a new issue](https://github.com/hect1k/swft/issues/new) on our GitHub repository. Ensure that your report includes:
 
 - A clear and descriptive title.
 - Steps to reproduce the problem.
@@ -35,7 +35,7 @@ If you encounter a bug while using SWFT or have identified a potential issue, pl
 
 ### Suggesting Enhancements
 
-Have an idea for improving SWFT? [Create an enhancement request](https://github.com/nnisarggada/swft/issues/new) on GitHub. Include:
+Have an idea for improving SWFT? [Create an enhancement request](https://github.com/hect1k/swft/issues/new) on GitHub. Include:
 
 - A concise description of the enhancement.
 - The problem it addresses or the value it adds.
@@ -73,7 +73,7 @@ To set up a development environment for SWFT using a virtual environment, follow
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/nnisarggada/swft
+   git clone https://github.com/hect1k/swft
    cd swft
    ```
 
@@ -112,7 +112,7 @@ To set up a development environment for SWFT using a virtual environment, follow
    Copy the sample `.env` file:
 
    ```bash
-   cp .env.sample .env
+   cp sample.env .env
    ```
 
    Edit the `.env` file to configure the development environment. Essential variables include:

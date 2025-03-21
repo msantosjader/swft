@@ -3,5 +3,5 @@ __pycache__/
 files_managed.json
 share_temp/*
 *.log
-.env
+.env*
 data/*
