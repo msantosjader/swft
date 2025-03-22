@@ -47,10 +47,10 @@ SMTP_SERVER = os.getenv(
 )  # SMTP server for sending emails
 SMTP_PORT = os.getenv("SMTP_PORT", 587)  # SMTP port for sending emails
 SMTP_USERNAME = os.getenv(
-    "SMTP_USERNAME", "swft@nnisarg.in"
+    "SMTP_USERNAME", "apps@nnisarg.in"
 )  # SMTP username for sending emails
 SMTP_FROM = os.getenv(
-    "SMTP_FROM", "SWFT by Nnisarg Gada <swft@nnisarg.in>"
+    "SMTP_FROM", "SWFT by Nnisarg Gada <apps@nnisarg.in>"
 )  # SMTP from address for sending emails
 SMTP_PASSWORD = os.getenv(
     "SMTP_PASSWORD", "yourpassword"
