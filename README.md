@@ -45,10 +45,10 @@ To install SWFT using Docker, follow these steps:
 
 2. **Copy the sample `.env` file:**
 
-   Copy the `.env.sample` file to create a `.env` file for configuration:
+   Copy the `sample.env` file to create a `.env` file for configuration:
 
    ```bash
-   cp .env.sample .env
+   cp sample.env .env
    ```
 
 3. **Run the app using Docker Compose:**
