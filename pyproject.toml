@@ -1,0 +1,36 @@
+[project]
+name = "swft"
+version = "1.1.0"
+description = "A simple temporary file sharing solution with CLI support"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "blinker==1.9.0",
+    "click==8.1.8",
+    "deprecated==1.2.15",
+    "flask==3.1.0",
+    "flask-httpauth==4.8.0",
+    "flask-limiter==3.9.2",
+    "flask-sqlalchemy==3.1.1",
+    "itsdangerous==2.2.0",
+    "jinja2==3.1.5",
+    "limits==3.14.1",
+    "markdown-it-py==3.0.0",
+    "markupsafe==3.0.2",
+    "mdurl==0.1.2",
+    "ordered-set==4.1.0",
+    "packaging==24.2",
+    "psycopg2-binary==2.9.10",
+    "pygments==2.18.0",
+    "python-dotenv==1.0.1",
+    "rich==13.9.4",
+    "sqlalchemy==2.0.36",
+    "typing-extensions==4.12.2",
+    "werkzeug==3.1.3",
+    "wrapt==1.17.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.7",
+]

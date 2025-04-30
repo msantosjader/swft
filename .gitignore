@@ -1,9 +1,7 @@
-env/
 __pycache__/
 files_managed.json
 share_temp/*
 .python-version
-pyrightconfig.json
 *.log
 .env*
 data/*

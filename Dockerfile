@@ -1,36 +1,34 @@
-FROM python:3.9-slim
-
-# Set environment variables to prevent writing .pyc files and buffer
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Set Flask environment variables
-ENV FLASK_APP=main.py
-ENV FLASK_ENV=production
+# Stage 1: Build dependencies
+FROM python:3.9-slim AS build
 
 # Set working directory
 WORKDIR /app
 
-# Create a non-root user and group for security
-RUN groupadd -r python && useradd -r -g python python
+# Install uv for managing the virtual environment
+RUN pip install --no-cache-dir uv
 
-# Copy the requirements file to install dependencies
-COPY requirements.txt /app/
+# Copy dependency files and install dependencies
+COPY pyproject.toml uv.lock ./
+RUN uv venv && uv sync --production
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Stage 2: Production image
+FROM python:3.9-slim AS production
+
+# Set working directory
+WORKDIR /app
+
+# Copy installed dependencies from build stage
+COPY --from=build /app /app
 
 # Copy the rest of the application code
-COPY . /app/
+COPY . .
 
-# Change ownership of files to non-root user
-RUN chown -R python:python /app
-
-# Switch to non-root user
+# Create and switch to a non-root user for security
+RUN adduser --disabled-password --gecos '' python && chown -R python:python /app
 USER python
 
-# Expose the port the app runs on
+# Expose Flask default port
 EXPOSE 5000
 
-# Command to run the app
-CMD ["python", "main.py"]
+# Run the app using UV
+CMD ["uv", "run", "python", "main.py"]

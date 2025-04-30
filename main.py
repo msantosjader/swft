@@ -131,8 +131,8 @@ class File(db.Model):
             "link": self.link,
             "filename": self.filename,
             "size": round(self.size, 2),
-            "upload_time": self.upload_time.strftime('%d %b %Y - %I:%M %p'),
-            "expiry_time": self.expiry_time.strftime('%d %b %Y - %I:%M %p')
+            "upload_time": self.upload_time.strftime("%d %b %Y - %I:%M %p"),
+            "expiry_time": self.expiry_time.strftime("%d %b %Y - %I:%M %p"),
         }
 
     def __repr__(self):
@@ -208,7 +208,9 @@ def send_email(email_address: str, file_path: str, file_url: str, expiry: float)
             print(f"[ERROR] - Invalid email address: {email_address}")
             return
         if not all([SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_FROM, SMTP_PASSWORD]):
-            print(f"[ERROR] - Missing required configuration: {SMTP_SERVER}, {SMTP_PORT}, {SMTP_USERNAME}, {SMTP_FROM}, {SMTP_PASSWORD}")
+            print(
+                f"[ERROR] - Missing required configuration: {SMTP_SERVER}, {SMTP_PORT}, {SMTP_USERNAME}, {SMTP_FROM}, {SMTP_PASSWORD}"
+            )
             return
         try:
             message = MIMEMultipart()
@@ -239,12 +241,15 @@ def send_email(email_address: str, file_path: str, file_url: str, expiry: float)
 
     threading.Thread(target=email_task).start()
 
+
 def delete_expired_files():
     with app.app_context():  # Ensure context is available
         while True:
             try:
                 print("Checking for expired files...")
-                expired_files = File.query.filter(File.expiry_time < datetime.now()).all()
+                expired_files = File.query.filter(
+                    File.expiry_time < datetime.now()
+                ).all()
                 for file in expired_files:
                     file_path = os.path.join(TEMP_FOLDER, file.filename)
                     if os.path.exists(file_path):
@@ -254,7 +259,7 @@ def delete_expired_files():
                 db.session.commit()
             except Exception as e:
                 print(f"Error in delete_expired_files: {e}")
-            time.sleep(60) # Check every 60 seconds
+            time.sleep(60)  # Check every 60 seconds
 
 
 @app.before_request
@@ -283,6 +288,7 @@ def index():
     return render_template(
         "index.html", full_url=URL, umami_src=UMAMI_SRC, umami_id=UMAMI_ID
     )
+
 
 @app.route("/about", methods=["GET"])
 def about():
@@ -347,7 +353,13 @@ def upload_file():
         # convert del_time to datetime object
         expiry_time = datetime.now() + timedelta(hours=del_time)
 
-        file_record = File(link=custom_link, filename=filename,size=file_size_bytes, upload_time=datetime.now(), expiry_time=expiry_time)
+        file_record = File(
+            link=custom_link,
+            filename=filename,
+            size=file_size_bytes,
+            upload_time=datetime.now(),
+            expiry_time=expiry_time,
+        )
         db.session.add(file_record)
         db.session.commit()
 
@@ -397,6 +409,7 @@ def share_file(link: str):
     is_img = ext in IMG_EXTENSIONS
     return send_from_directory(TEMP_FOLDER, file.filename, as_attachment=not is_img)
 
+
 # Admin dashboard
 @auth.verify_password
 def verify_password(username, password):
@@ -404,16 +417,15 @@ def verify_password(username, password):
         return True
     return False
 
+
 @app.route("/admin", methods=["GET"])
 @auth.login_required
 def admin_dashboard():
     active_files = File.query.all()
     files_data = [file.to_dict() for file in active_files]
-    data = {
-        "total_files": len(active_files),
-        "files": files_data
-    }
+    data = {"total_files": len(active_files), "files": files_data}
     return render_template("admin.html", data=data, full_url=URL)
+
 
 @app.route("/delete/<id>", methods=["DELETE"])
 @auth.login_required
