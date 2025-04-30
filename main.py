@@ -406,7 +406,7 @@ def share_file(link: str):
     if not file:
         return "Invalid link\n", 400
     _, ext = os.path.splitext(file.filename)
-    is_img = ext in IMG_EXTENSIONS
+    is_img = ext.lower() in IMG_EXTENSIONS
     return send_from_directory(TEMP_FOLDER, file.filename, as_attachment=not is_img)
 
 
