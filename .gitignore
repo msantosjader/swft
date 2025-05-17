@@ -5,3 +5,4 @@ share_temp/*
 *.log
 .env*
 data/*
+.venv
