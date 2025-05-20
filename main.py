@@ -11,6 +11,7 @@ import time
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, send_from_directory
+from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -95,6 +96,16 @@ DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 app = Flask(
     __name__, static_url_path="", static_folder="static", template_folder="templates"
 )
+
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": "*"
+        }
+    }
+)
+
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
