@@ -266,6 +266,11 @@ def delete_expired_files():
             time.sleep(60)  # Check every 60 seconds
 
 
+@app.errorhandler(429)
+def ratelimit_handler():
+    return "Too many requests. Please try again later.", 429
+
+
 @app.before_request
 def log_request():
     remote_addr = request.headers.get("X-Forwarded-For", request.remote_addr)
