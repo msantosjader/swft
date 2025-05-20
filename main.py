@@ -267,7 +267,7 @@ def delete_expired_files():
 
 
 @app.errorhandler(429)
-def ratelimit_handler():
+def ratelimit_handler(_):
     return "Too many requests. Please try again later.", 429
 
 
