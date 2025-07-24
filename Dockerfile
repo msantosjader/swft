@@ -6,11 +6,15 @@ ENV PYTHONPATH=/app:$PYTHONPATH
 
 COPY pyproject.toml uv.lock ./
 
+# Instala dependências, incluindo o gunicorn
 RUN pip install --no-cache-dir uv && uv venv && uv sync
 
 COPY . .
+
+# A permissão 777 é muito ampla para produção, mas mantendo por enquanto.
 RUN chmod -R 777 /app
 
 EXPOSE ${PORT}
 
-CMD ["uv", "run", "python", "main.py", "--host", "0.0.0.0", "--port", "${PORT}"]
+# CMD alterado para usar Gunicorn com 7 workers
+CMD ["uv", "run", "gunicorn", "--workers", "4", "--bind", "0.0.0.0:${PORT}", "main:app"]
