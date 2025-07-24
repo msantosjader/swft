@@ -409,6 +409,7 @@ def upload_file():
 
 @app.route("/share", methods=["POST"])
 @limiter.limit(UPLOAD_RATE_LIMIT)
+@require_api_key
 def upload_file_api():
     """Esta rota serve como um alias para a função de upload,
     mas no endpoint /share para a API."""
@@ -457,7 +458,27 @@ def delete_file(id):
         print(f"[ERROR] - Could not delete file {id}: {e}")
         return f"Error: {e}", 500
 
+def require_api_key(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Pega a chave de API esperada do ambiente
+        required_api_key = os.getenv("API_KEY")
 
+        # Falha de forma segura se a chave não estiver configurada no servidor
+        if not required_api_key:
+            return "Erro: Chave de API não configurada no servidor", 500
+
+        # Pega a chave enviada pelo cliente no cabeçalho
+        provided_key = request.headers.get("X-API-Key")
+
+        # Compara a chave enviada com a chave esperada
+        if not provided_key or provided_key != required_api_key:
+            return "Não autorizado: Chave de API inválida ou ausente", 401
+
+        # Se tudo estiver correto, executa a função da rota original
+        return f(*args, **kwargs)
+    return decorated_function
+    
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
