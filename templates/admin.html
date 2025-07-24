@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-g" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard | SWFT | Simple Web-based File Transfer</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -10,7 +10,6 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
 
-  <!-- SEO -->
   <meta name="description"
     content="Admin Dashboard for managing files in SWFT, a lightweight web-based file sharing service." />
   <meta name="keywords" content="admin, dashboard, file management, SWFT" />
@@ -24,8 +23,6 @@
   <meta property="og:site_name" content="SWFT Admin Dashboard" />
   <meta property="og:locale" content="en_US" />
   <link rel="canonical" href="{{ full_url }}" />
-  <!-- SEO -->
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/0b92670209.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -81,8 +78,10 @@
             <td class="px-6 py-3">
               {% if size_in_mb < 1 %} {{ (file.size / 1024) | round(2) }} KB {% elif size_in_mb < 1024 %} {{ size_in_mb
                 | round(2) }} MB {% else %} {{ (size_in_mb / 1024) | round(2) }} GB {% endif %} </td>
-            <td class="px-6 py-3">{{ file.upload_time }}</td>
-            <td class="px-6 py-3">{{ file.expiry_time }}</td>
+            
+            <td class="px-6 py-3 local-time" data-timestamp="{{ file.upload_time }}">{{ file.upload_time }}</td>
+            <td class="px-6 py-3 local-time" data-timestamp="{{ file.expiry_time }}">{{ file.expiry_time }}</td>
+            
             <td class="px-6 py-3">
               <button onclick="deleteFile('{{ file.id }}')" type="button" class="text-rose-500 hover:no-underline"><i
                   class="fa fa-trash"></i></a>
@@ -127,6 +126,26 @@
       }
     }
   </script>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const timeElements = document.querySelectorAll('.local-time');
+  
+          timeElements.forEach(function(element) {
+              const utcTimestamp = element.dataset.timestamp;
+              if (!utcTimestamp) return;
+  
+              const date = new Date(utcTimestamp);
+              const options = {
+                  year: 'numeric', month: '2-digit', day: '2-digit',
+                  hour: '2-digit', minute: '2-digit', hour12: false
+              };
+  
+              element.textContent = date.toLocaleString(undefined, options).replace(',', '');
+          });
+      });
+  </script>
+
 </body>
 
 </html>
