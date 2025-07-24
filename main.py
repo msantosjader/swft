@@ -37,7 +37,7 @@ def require_api_key(f):
 
         # Compara a chave enviada com a chave esperada
         if not provided_key or provided_key != required_api_key:
-            return "Não autorizado: Chave de API inválida ou ausente", 401
+            return "401 - UNAUTHORIZED", 401
 
         # Se tudo estiver correto, executa a função da rota original
         return f(*args, **kwargs)
