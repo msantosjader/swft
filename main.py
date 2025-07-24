@@ -407,6 +407,12 @@ def upload_file():
     except Exception as e:
         return f"Error: {e}\n", 500
 
+@app.route("/share", methods=["POST"])
+@limiter.limit(UPLOAD_RATE_LIMIT)
+def upload_file_api():
+    """Esta rota serve como um alias para a função de upload,
+    mas no endpoint /share para a API."""
+    return upload_file()
 
 @app.route("/<link>", methods=["GET"])
 @limiter.limit(DOWNLOAD_RATE_LIMIT)
