@@ -11,6 +11,6 @@ RUN pip install --no-cache-dir uv && uv venv && uv sync
 COPY . .
 RUN chmod -R 777 /app
 
-EXPOSE 5000
+EXPOSE ${PORT}
 
-CMD ["uv", "run", "python", "main.py", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uv", "run", "python", "main.py", "--host", "0.0.0.0", "--port", "${PORT}"]
