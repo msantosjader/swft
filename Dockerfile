@@ -2,15 +2,14 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir uv
+ENV PYTHONPATH=/app:$PYTHONPATH
 
 COPY pyproject.toml uv.lock ./
-RUN uv venv && uv sync
+
+RUN pip install --no-cache-dir uv && uv venv && uv sync
 
 COPY . .
-
-RUN adduser --disabled-password --gecos '' python && chown -R python:python /app
-USER python
+RUN chmod -R 777 /app
 
 EXPOSE 5000
 
