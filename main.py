@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -152,13 +153,15 @@ class File(db.Model):
         self.expiry_time = expiry_time
 
     def to_dict(self):
+        upload_time_utc = self.upload_time.replace(tzinfo=timezone.utc)
+        expiry_time_utc = self.expiry_time.replace(tzinfo=timezone.utc)
         return {
             "id": self.id,
             "link": self.link,
             "filename": self.filename,
             "size": round(self.size, 2),
-            "upload_time": self.upload_time.strftime("%d %b %Y - %I:%M %p"),
-            "expiry_time": self.expiry_time.strftime("%d %b %Y - %I:%M %p"),
+            "upload_time": upload_time_utc.isoformat(),
+            "expiry_time": expiry_time_utc.isoformat(),
         }
 
     def __repr__(self):
